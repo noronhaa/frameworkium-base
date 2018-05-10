@@ -54,6 +54,12 @@ public enum Property {
         this.value = retrieveValue(key);
     }
 
+    /**
+     * Return a property value from system properties if present otherwise return from properties if present otherwise
+     * will return null
+     * @param key
+     * @return value of property
+     */
     private String retrieveValue(String key) {
         if (System.getProperty(key) != null) {
             return System.getProperty(key);
@@ -62,6 +68,11 @@ public enum Property {
         }
     }
 
+    /**
+     * Retrieve property value from config file
+     * @param key
+     * @return value of property
+     */
     private String getValueFromConfigFile(String key) {
         if (configMap == null) {
             configMap = loadConfigFile();
@@ -75,6 +86,10 @@ public enum Property {
         }
     }
 
+    /**
+     * Load properties from a config file into a Map
+     * @return map of properties in config file
+     */
     private static Map<String, Object> loadConfigFile() {
         String configFileName = System.getProperty("config");
         if (StringUtils.isNotEmpty(configFileName)) {
