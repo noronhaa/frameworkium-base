@@ -24,6 +24,7 @@ public enum Property {
     SUT_VERSION("sutVersion"),
     JIRA_RESULT_FIELD_NAME("jiraResultFieldName"),
     JIRA_RESULT_TRANSITION("jiraResultTransition"),
+    JIRA_PROJECT_KEY("jiraProjectKey"),
     PROXY("proxy"),
     MAX_RETRY_COUNT("maxRetryCount"),
     // UI specific
