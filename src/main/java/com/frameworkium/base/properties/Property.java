@@ -16,7 +16,7 @@ public enum Property {
     JIRA_URL("jiraURL"),
     SPIRA_URL("spiraURL"),
     RESULT_VERSION("resultVersion"),
-    ZAPI_CYCLE_REGEX("zapiCycleRegEx"),
+    ZAPI_CYCLE_REGEX("zapiCycleName"),
     JQL_QUERY("jqlQuery"),
     JIRA_USERNAME("jiraUsername"),
     JIRA_PASSWORD("jiraPassword"),
