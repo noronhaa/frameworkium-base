@@ -31,7 +31,8 @@ public class TestListener implements ITestListener {
     public void onTestSkipped(ITestResult result) {
         logger.warn("SKIP  {}", getTestIdentifier(result));
         Throwable cause = result.getThrowable();
-        if (cause != null && SkipException.class.isAssignableFrom(cause.getClass())) {
+        if (cause != null
+                && SkipException.class.isAssignableFrom(cause.getClass())) {
             logger.warn(cause.getMessage());
         }
     }
