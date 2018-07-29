@@ -6,17 +6,21 @@ import org.yaml.snakeyaml.error.YAMLException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
+/**
+ * Contains all the user specified properties used by Frameworkium.
+ * This can read from a file or from System Properties.
+ * N.B. The value is set once at class initialisation,
+ * therefore any updates will not be applied.
+ */
 public enum Property {
 
     BUILD("build"),
     JIRA_URL("jiraURL"),
     SPIRA_URL("spiraURL"),
     RESULT_VERSION("resultVersion"),
-    ZAPI_CYCLE_REGEX("zapiCycleName"),
+    ZAPI_CYCLE_REGEX("zapiCycleRegEx"), // TODO: this is "zapiCycleName" in core
     JQL_QUERY("jqlQuery"),
     JIRA_USERNAME("jiraUsername"),
     JIRA_PASSWORD("jiraPassword"),
@@ -24,7 +28,7 @@ public enum Property {
     SUT_VERSION("sutVersion"),
     JIRA_RESULT_FIELD_NAME("jiraResultFieldName"),
     JIRA_RESULT_TRANSITION("jiraResultTransition"),
-    JIRA_PROJECT_KEY("jiraProjectKey"),
+    // JIRA_PROJECT_KEY("jiraProjectKey"), // TODO: exists in core, why not here?
     PROXY("proxy"),
     MAX_RETRY_COUNT("maxRetryCount"),
     // UI specific
@@ -55,12 +59,6 @@ public enum Property {
         this.value = retrieveValue(key);
     }
 
-    /**
-     * Return a property value from system properties if present otherwise return from properties if present otherwise
-     * will return null
-     * @param key
-     * @return value of property
-     */
     private String retrieveValue(String key) {
         if (System.getProperty(key) != null) {
             return System.getProperty(key);
@@ -69,11 +67,6 @@ public enum Property {
         }
     }
 
-    /**
-     * Retrieve property value from config file
-     * @param key
-     * @return value of property
-     */
     private String getValueFromConfigFile(String key) {
         if (configMap == null) {
             configMap = loadConfigFile();
@@ -87,35 +80,29 @@ public enum Property {
         }
     }
 
-    /**
-     * Load properties from a config file into a Map
-     * @return map of properties in config file
-     */
     private static Map<String, Object> loadConfigFile() {
         String configFileName = System.getProperty("config");
-        if (StringUtils.isNotEmpty(configFileName)) {
-            try (InputStream configFileStream =
-                         ClassLoader.getSystemClassLoader()
-                                 .getResourceAsStream(configFileName)) {
-                return new Yaml().load(configFileStream);
-            } catch (IOException | YAMLException e) {
-                throw new IllegalArgumentException(
-                        "Properties file '" + configFileName + "' not found.", e);
-            }
-        } else {
+
+        if (StringUtils.isBlank(configFileName)) {
             return Collections.emptyMap();
+        }
+
+        try (InputStream configFileStream =
+                     ClassLoader.getSystemClassLoader()
+                             .getResourceAsStream(configFileName)) {
+            return new Yaml().load(configFileStream);
+        } catch (IOException | YAMLException e) {
+            throw new IllegalArgumentException(
+                    "Properties file '" + configFileName + "' not found.", e);
         }
     }
 
-    /**
-     * Check if a property is specified.
-     *
-     * @return true if the property is not empty ("") and not null
-     */
+    /** @return true if the property is not empty ("") and not null */
     public boolean isSpecified() {
         return StringUtils.isNotEmpty(value);
     }
 
+    /** @return the {@link String} value of the property for the enum. */
     public String getValue() {
         return value;
     }
