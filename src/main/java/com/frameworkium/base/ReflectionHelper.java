@@ -25,10 +25,10 @@ public class ReflectionHelper {
             m.invoke(allureLoggerClass, message);
         } catch (NoSuchMethodException
                 | IllegalAccessException
-                | InvocationTargetException ignored) {
-            //
+                | InvocationTargetException ex) {
+            throw new RuntimeException(ex);
         } catch (ClassNotFoundException e) {
-            logger.info("AllureLogger: ClassNotFoundException - " +
+            logger.debug("AllureLogger: ClassNotFoundException - " +
                     "Not using Allure Reporting but page loaded successfully");
         }
     }
@@ -44,10 +44,10 @@ public class ReflectionHelper {
             m.invoke(Clazz);
         } catch (NoSuchMethodException
                 | IllegalAccessException
-                | InvocationTargetException ignored) {
-            //
+                | InvocationTargetException ex) {
+            throw new RuntimeException(ex);
         } catch (ClassNotFoundException e) {
-            logger.warn("AllureProperties: ClassNotFoundException - " +
+            logger.debug("AllureProperties: ClassNotFoundException - " +
                     "Not using Allure Reporting");
         }
     }
@@ -66,13 +66,12 @@ public class ReflectionHelper {
             m.invoke(Clazz.newInstance(), name, path);
         } catch (NoSuchMethodException
                 | IllegalAccessException
-                | InvocationTargetException ignored) {
-            //
+                | InvocationTargetException
+                | InstantiationException ex) {
+            throw new RuntimeException(ex);
         } catch (ClassNotFoundException e) {
-            logger.warn("AllureScreenshotHelper: ClassNotFoundException - " +
+            logger.debug("AllureScreenshotHelper: ClassNotFoundException - " +
                     "Not using Allure Reporting");
-        } catch (InstantiationException e) {
-            e.printStackTrace();
         }
     }
 }
