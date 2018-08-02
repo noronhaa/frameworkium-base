@@ -28,7 +28,8 @@ public enum Property {
     SUT_VERSION("sutVersion"),
     JIRA_RESULT_FIELD_NAME("jiraResultFieldName"),
     JIRA_RESULT_TRANSITION("jiraResultTransition"),
-    // JIRA_PROJECT_KEY("jiraProjectKey"), // TODO: exists in core, why not here?
+    JIRA_PROJECT_KEY("jiraProjectKey"), // TODO: exists in core, why not here?
+    JIRA_BDD_FIELD_KEY("jiraBddFieldKey"),
     PROXY("proxy"),
     MAX_RETRY_COUNT("maxRetryCount"),
     // UI specific
